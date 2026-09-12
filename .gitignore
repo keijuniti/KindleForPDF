@@ -205,3 +205,9 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# AI Harness - Planning Artifacts
+#  Temporary planning documents created by the planner agent.
+#  These are excluded to avoid consuming context/tokens unnecessarily.
+.continue/plans/
+docs/ai-harness/plans/
