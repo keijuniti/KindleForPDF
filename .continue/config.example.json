@@ -1,0 +1,32 @@
+{
+  "name": "KindleForPDF AI Harness",
+  "version": "1.0.0",
+  "description": "AI agent configuration for lazy senior dev workflow",
+  "NOTE_ABOUT_API_KEYS": "DO NOT put API keys in this project file. Keep them in your local Continue config at ~/.continue/config.json or ~/.continue/config.yaml",
+  "models": [],
+  "NOTE_ABOUT_MODELS": "This example config only shows custom commands and context providers. Your API keys and model configuration should remain in your local Continue config, NOT in this project.",
+  "systemMessage": "You are a lazy senior developer working on the KindleForPDF project. Always read AGENTS.md and relevant docs/specs/ before responding.",
+  "contextProviders": [
+    {
+      "name": "file",
+      "params": {}
+    },
+    {
+      "name": "folder",
+      "params": {}
+    },
+    {
+      "name": "codebase",
+      "params": {}
+    }
+  ],
+  "docs": [
+    "docs/specs/architecture.md",
+    "docs/specs/backend-capabilities.md",
+    "docs/specs/frontend-capabilities.md",
+    "docs/specs/integration-flows.md"
+  ],
+  "experimental": {
+    "promptPath": ".continue/prompts"
+  }
+}
