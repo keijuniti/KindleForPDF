@@ -1,34 +1,34 @@
 # AI Harness Setup Guide
 
-## ✅ Files Created
+## Files Created
 
 Your AI harness is now set up! Here's what was created:
 
 ### Phase 1: Specification Files
-- ✅ `docs/specs/README.md` - How specs work
-- ✅ `docs/specs/architecture.md` - System overview
-- ✅ `docs/specs/backend-capabilities.md` - Backend features
-- ✅ `docs/specs/frontend-capabilities.md` - Frontend features
-- ✅ `docs/specs/integration-flows.md` - Key workflows
+- `docs/specs/README.md` - How specs work
+- `docs/specs/architecture.md` - System overview
+- `docs/specs/backend-capabilities.md` - Backend features
+- `docs/specs/frontend-capabilities.md` - Frontend features
+- `docs/specs/integration-flows.md` - Key workflows
 
 ### Phase 2: Agent Prompts
-- ✅ `.continue/prompts/planner.md` - Planning agent rules
-- ✅ `.continue/prompts/implementer.md` - Implementation agent rules
-- ✅ `.continue/prompts/reviewer.md` - Review agent rules
-- ✅ `.continue/prompts/tester.md` - Testing agent rules
-- ✅ `.continue/prompts/security.md` - Security agent rules
+- `.continue/prompts/planner.md` - Planning agent rules
+- `.continue/prompts/implementer.md` - Implementation agent rules
+- `.continue/prompts/reviewer.md` - Review agent rules
+- `.continue/prompts/tester.md` - Testing agent rules
+- `.continue/prompts/security.md` - Security agent rules
 
 ### Phase 3: Documentation
-- ✅ `docs/ai-harness/README.md` - How to use the agents
-- ✅ `docs/ai-harness/feedback-log.md` - Track improvements
-- ✅ `.continue/config.example.json` - Example config
+- `docs/ai-harness/README.md` - How to use the agents
+- `docs/ai-harness/feedback-log.md` - Track improvements
+- `.continue/config.example.json` - Example config
 
 ---
 
-## 🔧 Manual Setup Required
+## Manual Setup Required
 
 
-### ⚠️ IMPORTANT: API Keys Stay Local
+### IMPORTANT: API Keys Stay Local
 
 **DO NOT** put API keys in this project's `.continue/config.example.json`!
 
@@ -56,7 +56,7 @@ Continue.dev config is usually at:
 **Or** use Continue's UI:
 1. Open Continue sidebar
 
-2. Click gear icon (⚙️) → "Open config.json" (or config.yaml)
+2. Click the gear icon, then "Open config.json" (or config.yaml)
 
 ### Step 2: Copy the Configuration
 
@@ -68,31 +68,31 @@ Find or create a `customCommands` section in your config and add:
 
 ```json
 "customCommands": [
-  {
-    "name": "plan",
-    "description": "Planning Agent: Analyze request and create minimal implementation plan",
-    "prompt": "{{{ input }}}\n\nRead and follow .continue/prompts/planner.md to create a plan for this request."
-  },
-  {
-    "name": "implement",
-    "description": "Implementer Agent: Write minimal code following the plan",
-    "prompt": "{{{ input }}}\n\nRead and follow .continue/prompts/implementer.md to implement this. Always check AGENTS.md for lazy senior dev rules."
-  },
-  {
-    "name": "review",
-    "description": "Reviewer Agent: Review code against AGENTS.md principles",
-    "prompt": "{{{ input }}}\n\nRead and follow .continue/prompts/reviewer.md to review the implementation."
-  },
-  {
-    "name": "test",
-    "description": "Tester Agent: Generate minimal tests for non-trivial code",
-    "prompt": "{{{ input }}}\n\nRead and follow .continue/prompts/tester.md to create minimal tests."
-  },
-  {
-    "name": "security",
-    "description": "Security Agent: Scan for vulnerabilities (manual trigger only)",
-    "prompt": "{{{ input }}}\n\nRead and follow .continue/prompts/security.md to perform a security review."
-  }
+{
+"name": "plan",
+"description": "Planning Agent: Analyze request and create minimal implementation plan",
+"prompt": "{{{ input }}}\n\nRead and follow .continue/prompts/planner.md to create a plan for this request."
+},
+{
+"name": "implement",
+"description": "Implementer Agent: Write minimal code following the plan",
+"prompt": "{{{ input }}}\n\nRead and follow .continue/prompts/implementer.md to implement this. Always check AGENTS.md for lazy senior dev rules."
+},
+{
+"name": "review",
+"description": "Reviewer Agent: Review code against AGENTS.md principles",
+"prompt": "{{{ input }}}\n\nRead and follow .continue/prompts/reviewer.md to review the implementation."
+},
+{
+"name": "test",
+"description": "Tester Agent: Generate minimal tests for non-trivial code",
+"prompt": "{{{ input }}}\n\nRead and follow .continue/prompts/tester.md to create minimal tests."
+},
+{
+"name": "security",
+"description": "Security Agent: Scan for vulnerabilities (manual trigger only)",
+"prompt": "{{{ input }}}\n\nRead and follow .continue/prompts/security.md to perform a security review."
+}
 ]
 ```
 
@@ -102,18 +102,18 @@ This helps agents access relevant files:
 
 ```json
 "contextProviders": [
-  {
-    "name": "file",
-    "params": {}
-  },
-  {
-    "name": "folder",
-    "params": {}
-  },
-  {
-    "name": "codebase",
-    "params": {}
-  }
+{
+"name": "file",
+"params": {}
+},
+{
+"name": "folder",
+"params": {}
+},
+{
+"name": "codebase",
+"params": {}
+}
 ]
 ```
 
@@ -134,7 +134,7 @@ After editing config:
 
 ---
 
-## 🧪 Test the Setup
+## Test the Setup
 
 ### Test 1: Specs Are Readable
 
@@ -173,39 +173,39 @@ Expected: Agent should:
 
 ---
 
-## 📂 Directory Structure (Final)
+## Directory Structure (Final)
 
 ```
 KindleForPDF/
 ├── .continue/
-│   ├── prompts/
-│   │   ├── planner.md
-│   │   ├── implementer.md
-│   │   ├── reviewer.md
-│   │   ├── tester.md
-│   │   └── security.md
-│   └── config.example.json          # Copy this to your Continue config
+│ ├── prompts/
+│ │ ├── planner.md
+│ │ ├── implementer.md
+│ │ ├── reviewer.md
+│ │ ├── tester.md
+│ │ └── security.md
+│ └── config.example.json # Copy this to your Continue config
 │
 ├── docs/
-│   ├── ai-harness/
-│   │   ├── README.md                # How to use agents
-│   │   ├── feedback-log.md          # Track improvements
-│   │   └── SETUP.md                 # This file
-│   │
-│   └── specs/
-│       ├── README.md
-│       ├── architecture.md
-│       ├── backend-capabilities.md
-│       ├── frontend-capabilities.md
-│       └── integration-flows.md
+│ ├── ai-harness/
+│ │ ├── README.md # How to use agents
+│ │ ├── feedback-log.md # Track improvements
+│ │ └── SETUP.md # This file
+│ │
+│ └── specs/
+│ ├── README.md
+│ ├── architecture.md
+│ ├── backend-capabilities.md
+│ ├── frontend-capabilities.md
+│ └── integration-flows.md
 │
-├── AGENTS.md                        # Core lazy senior dev rules
+├── AGENTS.md # Core lazy senior dev rules
 └── [your existing project files]
 ```
 
 ---
 
-## 🚀 Next Steps
+## Next Steps
 
 ### 1. Review the Specs
 Check `docs/specs/*.md` to ensure they accurately reflect your current system. Edit as needed.
@@ -214,11 +214,11 @@ Check `docs/specs/*.md` to ensure they accurately reflect your current system. E
 Pick a small task and run through the full cycle:
 ```
 /plan [your task]
-→ Review plan
+Review plan
 /implement
-→ Review code
+Review code
 /review
-→ Approve or iterate
+Approve or iterate
 ```
 
 ### 3. Start Logging Feedback
@@ -232,19 +232,13 @@ The system gets better as you:
 
 ---
 
-## 📚 Reference
+## Reference
 
-| What | Where | Purpose |
-|------|-------|---------|
-| How to use agents | `docs/ai-harness/README.md` | Usage guide |
-| Improve agents | `docs/ai-harness/feedback-log.md` | Track iterations |
-| System overview | `docs/specs/architecture.md` | High-level context |
-| Agent rules | `.continue/prompts/*.md` | Agent behavior |
-| Core principles | `AGENTS.md` | Lazy senior dev philosophy |
+See the Reference Files table in `docs/ai-harness/README.md` for the full file map.
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Slash commands don't appear
 - Check config is saved
@@ -262,8 +256,8 @@ The system gets better as you:
 
 ---
 
-## ✅ You're All Set!
+## You're All Set!
 
-The AI harness is ready to use. Start with simple tasks, iterate on agent behavior, and enjoy lazy senior dev productivity. 🦥
+The AI harness is ready to use. Start with simple tasks, iterate on agent behavior, and enjoy lazy senior dev productivity.
 
 Questions? Check `docs/ai-harness/README.md` for detailed usage patterns.

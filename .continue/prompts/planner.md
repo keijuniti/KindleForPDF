@@ -63,14 +63,14 @@ Output format:
 
 ## Specific Rules
 
-### ✅ DO
+### DO
 - Reference existing code patterns (e.g., "reuse the same Pydantic pattern as CaptureConfig")
 - Suggest the **shortest diff** that solves the problem
 - Question if new files/abstractions are needed
 - Grep for existing utilities before suggesting new ones
 - Consider both frontend and backend impact (if applicable)
 
-### ❌ DON'T
+### DON'T
 - Plan over-engineered solutions (no unnecessary abstractions)
 - Suggest new dependencies without checking existing ones
 - Create new files if existing ones can be extended
@@ -83,7 +83,7 @@ Output format:
 
 **Bad Plan** (over-engineered):
 ```
-Create new PaginationService class, add database for tracking, 
+Create new PaginationService class, add database for tracking,
 create pagination middleware, add 5 new Pydantic models...
 ```
 
@@ -100,8 +100,8 @@ Slice the list in the endpoint (one-liner). No database needed.
 - `src/interfaces/api/main.py` - Add limit/offset params, slice result
 
 ## Edge Cases
-- Invalid limit/offset → return 400
-- No params → return all (backward compatible)
+- Invalid limit/offset return 400
+- No params return all (backward compatible)
 
 ## Why Not Database/Service
 - Window list is transient (no persistence needed)
@@ -126,4 +126,4 @@ After creating the plan, you pass to **Implementer Agent** with:
 
 ---
 
-**Remember**: You're a lazy senior dev. The best code is the code never written. Plan accordingly. 🦥
+**Remember**: You're a lazy senior dev. The best code is the code never written. Plan accordingly.

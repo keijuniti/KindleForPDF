@@ -4,36 +4,36 @@ This guide explains how to use the 5 AI agents (Planner, Implementer, Reviewer, 
 
 ---
 
-## 🤖 The 5 Agents
+## The 5 Agents
 
 ### 1. Planner Agent
-**When to use**: Starting a new feature or fixing a bug  
-**What it does**: Creates a minimal implementation plan  
+**When to use**: Starting a new feature or fixing a bug
+**What it does**: Creates a minimal implementation plan
 **Follows**: YAGNI, challenges complexity, suggests shortest approach
 
 ### 2. Implementer Agent
-**When to use**: After approving a plan  
-**What it does**: Writes the minimal code to solve the problem  
+**When to use**: After approving a plan
+**What it does**: Writes the minimal code to solve the problem
 **Follows**: Lazy senior dev rules, reuses patterns, shortest diff wins
 
 ### 3. Reviewer Agent
-**When to use**: After implementation  
-**What it does**: Checks code against AGENTS.md principles  
+**When to use**: After implementation
+**What it does**: Checks code against AGENTS.md principles
 **Follows**: Enforces no over-engineering, checks correctness
 
 ### 4. Tester Agent
-**When to use**: When ready to add tests (non-trivial code only)  
-**What it does**: Generates minimal test coverage  
+**When to use**: When ready to add tests (non-trivial code only)
+**What it does**: Generates minimal test coverage
 **Follows**: No heavy frameworks, test what matters
 
 ### 5. Security Agent
-**When to use**: Manual trigger only (before sensitive changes)  
-**What it does**: Scans for vulnerabilities  
+**When to use**: Manual trigger only (before sensitive changes)
+**What it does**: Scans for vulnerabilities
 **Follows**: Focus on trust boundaries, minimal fixes
 
 ---
 
-## 📋 How to Invoke Each Agent
+## How to Invoke Each Agent
 
 ### Method 1: Slash Commands (Recommended)
 
@@ -86,12 +86,12 @@ Just describe what you want, and Continue will pick the right agent based on con
 
 ---
 
-## 🔄 Typical Workflow
+## Typical Workflow
 
 ### Example: Adding a New Feature
 
 ```
-You:  /plan Add a GET /pdfs endpoint to list all generated PDFs in the outputs folder
+You: /plan Add a GET /pdfs endpoint to list all generated PDFs in the outputs folder
 
 Agent (Planner):
 - Reads docs/specs/
@@ -100,9 +100,9 @@ Agent (Planner):
 - Questions if this is needed (YAGNI check)
 - Outputs: files to modify, approach, edge cases
 
-You: [Review plan] → Approve or ask for changes
+You: [Review plan] Approve or ask for changes
 
-You:  /implement Use the plan above
+You: /implement Use the plan above
 
 Agent (Implementer):
 - Follows planner's approach
@@ -111,9 +111,9 @@ Agent (Implementer):
 - Updates specs if needed
 - Shows diff
 
-You: [Review code] → Looks good
+You: [Review code] Looks good
 
-You:  /review Check the implementation
+You: /review Check the implementation
 
 Agent (Reviewer):
 - Checks against AGENTS.md rules
@@ -121,16 +121,16 @@ Agent (Reviewer):
 - Checks edge cases
 - Approves or requests changes
 
-You: [If approved] → Merge/commit
+You: [If approved] Merge/commit
 
-You (later):  /test Generate tests for GET /pdfs
+You (later): /test Generate tests for GET /pdfs
 
 Agent (Tester):
 - Creates minimal test
 - Happy path + 1-2 edge cases
 - Runnable standalone
 
-You (optional):  /security Check the /pdfs endpoint
+You (optional): /security Check the /pdfs endpoint
 
 Agent (Security):
 - Scans for path traversal
@@ -140,7 +140,7 @@ Agent (Security):
 
 ---
 
-## 🔁 Feedback Loop: Improving Agents
+## Feedback Loop: Improving Agents
 
 ### When an Agent Gives Suboptimal Output
 
@@ -151,9 +151,9 @@ Agent (Security):
 ```markdown
 ## 2025-01-20: Implementer Over-Engineering
 
-**Task**: Add simple `page_count` field to API response  
-**Issue**: Created new service layer, added Pydantic model, created 3 files  
-**Expected**: Just add one field to existing `CaptureConfig` model  
+**Task**: Add simple `page_count` field to API response
+**Issue**: Created new service layer, added Pydantic model, created 3 files
+**Expected**: Just add one field to existing `CaptureConfig` model
 
 **Root Cause**: Agent didn't grep for existing patterns first
 ```
@@ -165,7 +165,7 @@ Edit `.continue/prompts/implementer.md`:
 ```markdown
 ## Before Writing ANY Code
 **Climb the ladder** (stop at first rung that holds):
-1. Can this be added to an existing model/class? (ONE FIELD = NO NEW FILE) ← ADD THIS
+1. Can this be added to an existing model/class? (ONE FIELD = NO NEW FILE) ADD THIS
 2. Does it already exist in this codebase?
 ...
 ```
@@ -179,8 +179,8 @@ Edit `.continue/prompts/implementer.md`:
 #### Step 4: Log the Result
 
 ```markdown
-**Fix Applied**: Added "one field = no new file" rule to implementer.md  
-**Re-Run Result**: ✅ Now just modifies existing Pydantic model  
+**Fix Applied**: Added "one field = no new file" rule to implementer.md
+**Re-Run Result**: Now just modifies existing Pydantic model
 **Status**: Keep this rule, works well
 ```
 
@@ -192,21 +192,21 @@ The more you use the agents and log feedback, the better they become at followin
 
 ---
 
-## 💡 Tips for Best Results
+## Tips for Best Results
 
 ### 1. Always Start with Planning
 Don't skip the planner. Even for "simple" tasks, planning catches YAGNI violations.
 
 ### 2. Be Specific About Scope
 ```
-❌ "Add authentication"  (too vague)
-✅ "Add basic API key authentication to POST /capture endpoint only"
+"Add authentication" (too vague)
+"Add basic API key authentication to POST /capture endpoint only"
 ```
 
 ### 3. Reference Existing Code
 ```
-✅ "Use the same pattern as CaptureConfig for the new model"
-✅ "Follow the use case structure in get_windows_usecase.py"
+"Use the same pattern as CaptureConfig for the new model"
+"Follow the use case structure in get_windows_usecase.py"
 ```
 
 ### 4. Challenge Complexity
@@ -226,7 +226,7 @@ Only for:
 
 ---
 
-## 📊 When to Use Which Agent
+## When to Use Which Agent
 
 | Scenario | Agent | Command |
 |----------|-------|---------|
@@ -240,39 +240,40 @@ Only for:
 
 ---
 
-## 🚨 Common Mistakes to Avoid
+## Common Mistakes to Avoid
 
-### ❌ Skipping the Planner
-"It's a simple change, I'll just implement it."  
-→ Result: Over-engineered solution, missed existing code reuse.
+### Skipping the Planner
+"It's a simple change, I'll just implement it."
+Result: Over-engineered solution, missed existing code reuse.
 
 **Fix**: Always `/plan` first, even for "obvious" changes.
 
-### ❌ Not Updating Specs After Architecture Changes
-Implementer adds new capability, forgets to update `docs/specs/backend-capabilities.md`.  
-→ Result: Next agent doesn't know the capability exists, re-implements it.
+### Not Updating Specs After Architecture Changes
+Implementer adds new capability, forgets to update `docs/specs/backend-capabilities.md`.
+Result: Next agent doesn't know the capability exists, re-implements it.
 
 **Fix**: Reviewer should catch this. Update specs when architecture changes.
 
-### ❌ Over-Relying on Security Agent
-Running `/security` on every trivial change.  
-→ Result: Wasted time, security fatigue.
+### Over-Relying on Security Agent
+Running `/security` on every trivial change.
+Result: Wasted time, security fatigue.
 
 **Fix**: Use it only for trust boundaries (API inputs, file handling, auth).
 
-### ❌ Not Logging Feedback
-Agent gives bad output, you manually fix it, move on.  
-→ Result: Agent makes same mistake next time.
+### Not Logging Feedback
+Agent gives bad output, you manually fix it, move on.
+Result: Agent makes same mistake next time.
 
 **Fix**: Log in `feedback-log.md`, update prompt, re-run.
 
 ---
 
-## 📚 Reference Files
+## Reference Files
 
 | File | Purpose |
 |------|---------|
-| `.continue/config.json` | Agent definitions, slash commands |
+| `.continue/config.json` | Continue.dev agent definitions, slash commands |
+| `.claude/commands/*.md` | Claude Code slash commands (`/plan`, `/implement`, `/review`, `/test`, `/security`) — same underlying prompts as Continue |
 | `.continue/prompts/planner.md` | Planner agent system prompt |
 | `.continue/prompts/implementer.md` | Implementer agent system prompt |
 | `.continue/prompts/reviewer.md` | Reviewer agent system prompt |
@@ -281,27 +282,28 @@ Agent gives bad output, you manually fix it, move on.
 | `docs/ai-harness/feedback-log.md` | Your iteration notes |
 | `docs/specs/` | System specs (agents read these for context) |
 | `AGENTS.md` | Core lazy senior dev rules (all agents follow this) |
+| `CLAUDE.md` | Auto-loads `AGENTS.md` for Claude Code sessions |
 
 ---
 
-## 🎓 Learning Curve
+## Learning Curve
 
-**Week 1**: Feel awkward using agents, manually fix outputs  
-**Week 2**: Start logging feedback, update prompts  
-**Week 3**: Agents match your style, minimal manual fixes  
+**Week 1**: Feel awkward using agents, manually fix outputs
+**Week 2**: Start logging feedback, update prompts
+**Week 3**: Agents match your style, minimal manual fixes
 **Week 4+**: Agents feel like a well-trained junior dev
 
 **Key**: Iteration. The system gets better as you refine it.
 
 ---
 
-## 🦥 Remember
+## Remember
 
 You're building a **harness**, not a perfect AI system.
 
-- Agents will make mistakes → Log feedback, improve prompts
-- Specs will drift → Update them when architecture changes
-- Rules will evolve → Add to `AGENTS.md` as you find patterns
+- Agents will make mistakes Log feedback, improve prompts
+- Specs will drift Update them when architecture changes
+- Rules will evolve Add to `AGENTS.md` as you find patterns
 
 **Lazy senior dev = efficient iteration, not perfection on first try.**
 

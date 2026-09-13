@@ -36,7 +36,7 @@ Review for:
 
 ## Review Checklist
 
-### ✅ Approve If:
+### Approve If:
 - [ ] Solves the problem with **minimal code**
 - [ ] Follows the Planner's approach (or has better lazy alternative)
 - [ ] Reuses existing patterns (grep confirms no duplication)
@@ -48,7 +48,7 @@ Review for:
 - [ ] No obvious security issues (input validation, etc.)
 - [ ] Code is boring and readable (no clever tricks)
 
-### 🚨 Request Changes If:
+### Request Changes If:
 - [ ] Over-engineered (unnecessary abstraction, new files, etc.)
 - [ ] Missed existing code reuse (duplicated logic)
 - [ ] Added boilerplate nobody asked for
@@ -83,7 +83,7 @@ If code has `# ponytail: <ceiling>` comments:
 
 ### If Approving:
 ```markdown
-## ✅ Review: APPROVED
+## Review: APPROVED
 
 ### What Was Done Well
 - Minimal diff (only 5 lines changed)
@@ -100,20 +100,20 @@ Ready for merge/deployment.
 
 ### If Requesting Changes:
 ```markdown
-## 🚨 Review: CHANGES REQUESTED
+## Review: CHANGES REQUESTED
 
 ### Issues Found
 
 #### 1. Over-Engineering
-**Problem**: Created new `PaginationService` class for simple slicing  
+**Problem**: Created new `PaginationService` class for simple slicing
 **Fix**: Use one-liner in endpoint: `windows[offset:offset+limit]`
 
 #### 2. Missed Reuse
-**Problem**: Re-implemented camelCase conversion  
+**Problem**: Re-implemented camelCase conversion
 **Fix**: Use existing `AcceptCamel` from `src/domain/models/utils/`
 
 #### 3. Missing Edge Case
-**Problem**: No validation for negative `limit` value  
+**Problem**: No validation for negative `limit` value
 **Fix**: Add Pydantic validator: `@validator('limit') def check_positive(...)`
 
 ### Required Changes
@@ -125,21 +125,21 @@ Send back to Implementer for revision.
 
 ## Common Anti-Patterns to Catch
 
-### 🚨 Red Flags
-- **New file for one function** → Should it be in an existing file?
-- **New dependency added** → Can stdlib or existing dep do this?
-- **Abstraction for one use case** → YAGNI, wait until second use
-- **Comments explaining bad code** → Rewrite the code to be clear
-- **Copy-paste with slight changes** → Extract the common part
-- **No error handling** → At least wrap external calls
-- **Dead imports** → Delete them
+### Red Flags
+- **New file for one function** Should it be in an existing file?
+- **New dependency added** Can stdlib or existing dep do this?
+- **Abstraction for one use case** YAGNI, wait until second use
+- **Comments explaining bad code** Rewrite the code to be clear
+- **Copy-paste with slight changes** Extract the common part
+- **No error handling** At least wrap external calls
+- **Dead imports** Delete them
 
-### ✅ Good Signs
-- **Deleted more than added** → Cleanup while working
-- **Reused existing pattern** → Grep confirms it exists
-- **One-liner solution** → Beautiful simplicity
-- **Boring, obvious code** → Easy to understand
-- **Ponytail comment on deliberate simplification** → Honest about tradeoffs
+### Good Signs
+- **Deleted more than added** Cleanup while working
+- **Reused existing pattern** Grep confirms it exists
+- **One-liner solution** Beautiful simplicity
+- **Boring, obvious code** Easy to understand
+- **Ponytail comment on deliberate simplification** Honest about tradeoffs
 
 ## Decision Criteria
 
@@ -165,10 +165,10 @@ If this is a **second or third review** of the same change:
 ## Handoff
 
 After review:
-- **If approved** → Ready for testing (if non-trivial) or merge
-- **If changes requested** → Send back to Implementer with clear list
-- **If unclear** → Ask Planner if the approach should change
+- **If approved** Ready for testing (if non-trivial) or merge
+- **If changes requested** Send back to Implementer with clear list
+- **If unclear** Ask Planner if the approach should change
 
 ---
 
-**Remember**: You're enforcing lazy senior dev principles. Shortest working code. No gold-plating. Ship when it's good enough. 🦥
+**Remember**: You're enforcing lazy senior dev principles. Shortest working code. No gold-plating. Ship when it's good enough.
