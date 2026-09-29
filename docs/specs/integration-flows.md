@@ -19,48 +19,41 @@
      │ 1. Opens frontend
      v
 ┌──────────────┐
-│  Frontend    │───────────────────────────────────┐
-└──────┬───────┘                                   │
-       │                                           │
-       │ 2. GET /windows                           │
-       v                                           │
-┌──────────────┐                                   │
-│  Backend     │                                   │
-│  (FastAPI)   │                                   │
-└──────┬───────┘                                   │
-       │                                           │
-       │ 3. OSWindowService.get_windows()          │
-       │    → Returns: [{"title": "Kindle", ...}]  │
-       │                                           │
-       │ 4. Response with window list              │
-       v                                           │
-┌──────────────┐                                   │
-│  Frontend    │◄──────────────────────────────────┘
+│  Frontend    │
 └──────┬───────┘
        │
-       │ 5. User selects "Kindle" + config
+       │ 2. User clicks "Select Window" → browser's native
+       │    Screen Capture API (getDisplayMedia) opens the
+       │    OS window picker; frontend keeps the track label
+       │    ("window:<CGWindowID>:0") and stops the stream
+       │
+       │ 3. GET /window-name shows the app name (display only);
+       │    user may instead type an app name directly
+       │
+       │ 4. User confirms target + config
        │    (page_count=100, interval=1.5, grayscale=true)
        │
-       │ 6. POST /capture with config
+       │ 5. POST /capture with config
        v
 ┌──────────────┐
 │  Backend     │
 └──────┬───────┘
        │
+       │ 6. Validate config + resolve window ID + PID
+       │    (OSScreenService.find_window) → 422/404 on failure
+       │
        │ 7. CaptureBookUseCase.execute() [background task]
        │
-       ├──> 8. Focus Kindle window
-       │
-       ├──> 9. Loop (page_count/2 times for double-page spreads):
-       │        a. Capture full screen (OSScreenService)
-       │        b. Save to temp_images/page_NNN.jpg
-       │        c. Simulate "Right Arrow" keypress (page turn)
+       ├──> 8. Loop (ceil(page_count/2) times for double-page spreads):
+       │        a. Capture only the target window (screencapture -l)
+       │        b. Save to a per-run temp dir (tempfile)
+       │        c. Post "Right Arrow" to the Kindle PID (skipped after last)
        │        d. Wait interval seconds
        │
-       ├──> 10. Convert images to PDF (img2pdf)
-       │         → outputs/book.pdf
+       ├──> 9. Convert images to PDF (img2pdf)
+       │         → apps/api/outputs/<basename>.pdf
        │
-       └──> 11. Cleanup temp images
+       └──> 10. Temp dir removed automatically (also on failure)
        
        Response immediately: {"status": "success", "message": "Capture started"}
        (actual capture runs in background)
@@ -68,13 +61,13 @@
 
 ### Technical Details
 
-**Window Focus**: Uses macOS `pygetwindow` to activate by title match
+**Window Resolution**: Quartz `CGWindowListCopyWindowInfo` maps the label / app name to a window ID + PID (no focusing)
 
-**Screen Capture**: Pillow screenshot of entire display (assumes fullscreen Kindle)
+**Screen Capture**: `screencapture -x -o -l <id>` captures only the target window, even when covered
 
-**Page Navigation**: `pyautogui.press('right')` for next page
+**Page Navigation**: `CGEventPostToPid` sends Right Arrow straight to the Kindle process, so paging continues while other apps are in front
 
-**Double-page handling**: Physical page count ÷ 2 = number of screenshots (Kindle shows spreads)
+**Double-page handling**: ceil(page count ÷ 2) = number of screenshots (Kindle shows spreads)
 
 **Grayscale optimization**: Converts RGB → grayscale before saving (smaller file size)
 
@@ -126,9 +119,9 @@ Frontend ←──[WebSocket]──→ Backend
 ## Platform-Specific Notes
 
 ### macOS (Current Focus)
-- Window detection: Works via `pygetwindow`
-- Fullscreen requirement: macOS menu bar must be hidden for clean captures
-- Keyboard automation: Requires accessibility permissions for `pyautogui`
+- Window detection: Quartz window list (pyobjc)
+- Screen capture: Requires Screen Recording permission for the terminal running the API
+- Keyboard automation: `CGEventPostToPid` requires Accessibility permission
 
 ### Windows/Linux (Future)
 - Different window management APIs needed

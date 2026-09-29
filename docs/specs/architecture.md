@@ -15,8 +15,8 @@
 - **Runtime**: Python 3.x
 - **Framework**: FastAPI + uvicorn
 - **Key Libraries**:
-  - `pyautogui` - Screen capture and keyboard automation
-  - `pygetwindow` - Window detection (macOS focus)
+  - `pyobjc-framework-Quartz` - Window lookup and key events to a PID
+  - `screencapture` (macOS CLI) - Per-window capture
   - `img2pdf` - Image to PDF conversion
   - `Pillow` - Image processing
   - `pydantic` - Data validation
