@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!apps/web/src/lib/
 lib64/
 parts/
 sdist/
@@ -211,3 +212,8 @@ __marimo__/
 #  These are excluded to avoid consuming context/tokens unnecessarily.
 .continue/plans/
 docs/ai-harness/plans/
+
+# Capture outputs (captured books) and leftovers
+apps/api/outputs/
+temp_images/
+.DS_Store

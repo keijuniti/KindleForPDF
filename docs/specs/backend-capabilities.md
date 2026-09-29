@@ -2,12 +2,13 @@
 
 ## What We Can Do
 
-### 1. Window Detection
-- List all open GUI applications on macOS
-- Identify target window by title (e.g., "Kindle")
-- Focus/activate a specific window programmatically
+### 1. Window Resolution
+- Resolve the target to a macOS `CGWindowID` + PID (Quartz), no focusing needed
+- Accepts Chrome's `getDisplayMedia` track label (`window:<CGWindowID>:0`) or a plain
+  app name (falls back to that app's largest normal window; Safari/Firefox labels use this path)
 
-**Use case**: Get window list → User selects Kindle app
+**Use case**: Frontend picks the target window via the browser's native screen
+picker and sends the track label; backend captures that window even while it is in the background.
 
 ### 2. Screen Capture
 - Capture full screen or specific window
@@ -36,8 +37,8 @@
 
 **Endpoints** (high-level):
 - `GET /health` - Health check
-- `GET /windows` - List open applications
-- `POST /capture` - Start book capture (background task)
+- `GET /window-name?label=` - App name for a `getDisplayMedia` label (display only)
+- `POST /capture` - Validate config + resolve window (404 if missing), then capture in a background task
 
 **Data Validation**: Pydantic models with camelCase support for frontend
 
@@ -50,8 +51,7 @@
 **Clean Architecture** (see `architecture.md` for layers)
 
 ### Key Use Cases
-- `GetWindowsUseCase` - Wraps OS window service
-- `CaptureBookUseCase` - Orchestrates entire capture flow (focus → capture → page turn → PDF)
+- `CaptureBookUseCase` - Orchestrates entire capture flow (find window → capture window → page turn → PDF)
 
 ### Domain Models
 - `CaptureConfig` - Configuration for capture operation
@@ -62,8 +62,7 @@
   - `output_filename`: PDF output name
 
 ### Infrastructure Services
-- `OSWindowService` - Window detection and activation
-- `OSScreenService` - Screen capture, keyboard automation, image processing
+- `OSScreenService` - Window resolution, per-window capture (`screencapture -l`), key events to a PID (`CGEventPostToPid`), image processing
 
 ## Current Limitations
 
