@@ -7,7 +7,7 @@ export interface CaptureConfig {
 	useGrayscale: boolean;
 	resizeFactor: number;
 	outputFilename: string;
-	targetWindowTitle: string;
+	targetWindowId: number | null;
 }
 
 /**
@@ -19,5 +19,5 @@ export const defaultCaptureConfig = (): CaptureConfig => ({
 	useGrayscale: false,
 	resizeFactor: 1.0,
 	outputFilename: "captured_book.pdf",
-	targetWindowTitle: "",
+	targetWindowId: null,
 });

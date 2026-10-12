@@ -18,7 +18,7 @@ export function useCapture() {
 	};
 
 	const startCapture = async () => {
-		if (!config.targetWindowTitle) {
+		if (config.targetWindowId === null) {
 			alert("対象のウィンドウを選択してください");
 			return;
 		}

@@ -21,8 +21,8 @@ export default function CapturePage() {
 						<div className="space-y-3">
 							<Label htmlFor="window-select">対象アプリケーション</Label>
 							<WindowPicker
-								value={config.targetWindowTitle}
-								onChange={(value) => updateConfig("targetWindowTitle", value)}
+								value={config.targetWindowId}
+								onChange={(value) => updateConfig("targetWindowId", value)}
 							/>
 						</div>
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -30,10 +30,15 @@ export default function CapturePage() {
 								<Label htmlFor="pages">総ページ数</Label>
 								<Input
 									id="pages"
-									type="number"
-									value={config.pageCount}
+									type="text"
+									inputMode="numeric"
+									placeholder="例: 100"
+									value={config.pageCount || ""}
 									onChange={(e) =>
-										updateConfig("pageCount", Number(e.target.value))
+										updateConfig(
+											"pageCount",
+											Number(e.target.value.replace(/\D/g, "")),
+										)
 									}
 								/>
 							</div>
@@ -65,7 +70,7 @@ export default function CapturePage() {
 							className="w-full"
 							size="lg"
 							onClick={startCapture}
-							disabled={!config.targetWindowTitle}
+							disabled={config.targetWindowId === null || !config.pageCount}
 						>
 							キャプチャ実行開始
 						</Button>

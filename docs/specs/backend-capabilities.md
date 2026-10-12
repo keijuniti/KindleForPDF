@@ -2,13 +2,12 @@
 
 ## What We Can Do
 
-### 1. Window Resolution
-- Resolve the target to a macOS `CGWindowID` + PID (Quartz), no focusing needed
-- Accepts Chrome's `getDisplayMedia` track label (`window:<CGWindowID>:0`) or a plain
-  app name (falls back to that app's largest normal window; Safari/Firefox labels use this path)
+### 1. Window Detection
+- List capturable windows via Quartz (`GET /windows`): `id` (macOS `CGWindowID`), `pid`, app `name`, size
+- The frontend shows the app name and sends the chosen `id` as `targetWindowId`; no focusing needed
+- Requires Screen Recording permission for the terminal that launched the API (403 with a Japanese message otherwise)
 
-**Use case**: Frontend picks the target window via the browser's native screen
-picker and sends the track label; backend captures that window even while it is in the background.
+**Use case**: Frontend lists real windows from the API, user picks one, backend captures that window even while it is in the background.
 
 ### 2. Screen Capture
 - Capture full screen or specific window
@@ -37,8 +36,8 @@ picker and sends the track label; backend captures that window even while it is 
 
 **Endpoints** (high-level):
 - `GET /health` - Health check
-- `GET /window-name?label=` - App name for a `getDisplayMedia` label (display only)
-- `POST /capture` - Validate config + resolve window (404 if missing), then capture in a background task
+- `GET /windows` - Capturable windows (`id`, `name`, size); 403 if Screen Recording permission is missing
+- `POST /capture` - Validate config + resolve `targetWindowId` (404 if missing, 403 without permission), then capture in a background task
 
 **Data Validation**: Pydantic models with camelCase support for frontend
 
@@ -55,7 +54,7 @@ picker and sends the track label; backend captures that window even while it is 
 
 ### Domain Models
 - `CaptureConfig` - Configuration for capture operation
-  - `target_window_title`: Which app to capture
+  - `target_window_id`: CGWindowID returned by `GET /windows`
   - `page_count`: How many pages
   - `interval`: Delay between captures (seconds)
   - `use_grayscale`: Convert to grayscale (bool)

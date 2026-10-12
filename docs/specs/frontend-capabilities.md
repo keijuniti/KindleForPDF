@@ -3,7 +3,7 @@
 ## What We Provide
 
 ### UI Features (Current/Planned)
-- Window selection via the browser's native Screen Capture API (`getDisplayMedia`) — same mechanism Google Meet/Discord use
+- Window selection from the list the backend detects (`GET /windows`); the app name is shown and the window id is sent on capture
 - Capture configuration form (page count, interval, grayscale toggle)
 - Book preview/download interface
 - Status display for background capture tasks
@@ -46,14 +46,13 @@ apps/web/
 **Backend communication**: REST API calls to `http://localhost:8000`
 
 **Expected endpoints** (frontend perspective):
-- `GET /window-name?label=` → App name to display for the picked window
+- `GET /windows` → Capturable windows (`id`, `name`, size) detected by the backend
 - `POST /capture` → Start capture with config
 - `GET /health` → Health check
 
-Window selection: the frontend opens the browser's native picker
-(`navigator.mediaDevices.getDisplayMedia`), reads the track label, stops the stream
-immediately, and sends the label (or a typed app name) as `targetWindowTitle` on
-`POST /capture`. `GET /window-name` is only used to show a friendly name.
+Window selection: the frontend lists windows from `GET /windows`, shows the picked
+app name, and sends its `id` as `targetWindowId` on `POST /capture`. The browser's
+`getDisplayMedia` picker is not used: its track labels are not macOS CGWindowIDs.
 
 **Data format**: camelCase (matches JS conventions, backend converts via Pydantic)
 

@@ -7,4 +7,4 @@ class CaptureConfig(CamelBaseModel):
     output_filename: str = Field(min_length=1)
     use_grayscale: bool = False
     resize_factor: float = Field(default=1.0, gt=0, le=1)
-    target_window_title: str
+    target_window_id: int

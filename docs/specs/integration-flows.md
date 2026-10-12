@@ -22,18 +22,17 @@
 │  Frontend    │
 └──────┬───────┘
        │
-       │ 2. User clicks "Select Window" → browser's native
-       │    Screen Capture API (getDisplayMedia) opens the
-       │    OS window picker; frontend keeps the track label
-       │    ("window:<CGWindowID>:0") and stops the stream
+       │ 2. User clicks "Select Window" → GET /windows
+       │    (backend detects real windows via Quartz and returns
+       │    id=CGWindowID + app name); 403 if the terminal running
+       │    the API lacks Screen Recording permission
        │
-       │ 3. GET /window-name shows the app name (display only);
-       │    user may instead type an app name directly
+       │ 3. User picks one; UI shows the app name, keeps the id
        │
        │ 4. User confirms target + config
        │    (page_count=100, interval=1.5, grayscale=true)
        │
-       │ 5. POST /capture with config
+       │ 5. POST /capture with config (targetWindowId = picked id)
        v
 ┌──────────────┐
 │  Backend     │
