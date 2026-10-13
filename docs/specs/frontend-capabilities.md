@@ -3,7 +3,7 @@
 ## What We Provide
 
 ### UI Features (Current/Planned)
-- Window selection interface (list available apps)
+- Window selection from the list the backend detects (`GET /windows`); the app name is shown and the window id is sent on capture
 - Capture configuration form (page count, interval, grayscale toggle)
 - Book preview/download interface
 - Status display for background capture tasks
@@ -46,9 +46,13 @@ apps/web/
 **Backend communication**: REST API calls to `http://localhost:8000`
 
 **Expected endpoints** (frontend perspective):
-- `GET /windows` → List apps for selection
+- `GET /windows` → Capturable windows (`id`, `name`, size) detected by the backend
 - `POST /capture` → Start capture with config
 - `GET /health` → Health check
+
+Window selection: the frontend lists windows from `GET /windows`, shows the picked
+app name, and sends its `id` as `targetWindowId` on `POST /capture`. The browser's
+`getDisplayMedia` picker is not used: its track labels are not macOS CGWindowIDs.
 
 **Data format**: camelCase (matches JS conventions, backend converts via Pydantic)
 

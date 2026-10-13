@@ -3,11 +3,11 @@
 ## What We Can Do
 
 ### 1. Window Detection
-- List all open GUI applications on macOS
-- Identify target window by title (e.g., "Kindle")
-- Focus/activate a specific window programmatically
+- List capturable windows via Quartz (`GET /windows`): `id` (macOS `CGWindowID`), `pid`, app `name`, size
+- The frontend shows the app name and sends the chosen `id` as `targetWindowId`; no focusing needed
+- Requires Screen Recording permission for the terminal that launched the API (403 with a Japanese message otherwise)
 
-**Use case**: Get window list → User selects Kindle app
+**Use case**: Frontend lists real windows from the API, user picks one, backend captures that window even while it is in the background.
 
 ### 2. Screen Capture
 - Capture full screen or specific window
@@ -36,8 +36,8 @@
 
 **Endpoints** (high-level):
 - `GET /health` - Health check
-- `GET /windows` - List open applications
-- `POST /capture` - Start book capture (background task)
+- `GET /windows` - Capturable windows (`id`, `name`, size); 403 if Screen Recording permission is missing
+- `POST /capture` - Validate config + resolve `targetWindowId` (404 if missing, 403 without permission), then capture in a background task
 
 **Data Validation**: Pydantic models with camelCase support for frontend
 
@@ -50,20 +50,18 @@
 **Clean Architecture** (see `architecture.md` for layers)
 
 ### Key Use Cases
-- `GetWindowsUseCase` - Wraps OS window service
-- `CaptureBookUseCase` - Orchestrates entire capture flow (focus → capture → page turn → PDF)
+- `CaptureBookUseCase` - Orchestrates entire capture flow (find window → capture window → page turn → PDF)
 
 ### Domain Models
 - `CaptureConfig` - Configuration for capture operation
-  - `target_window_title`: Which app to capture
+  - `target_window_id`: CGWindowID returned by `GET /windows`
   - `page_count`: How many pages
   - `interval`: Delay between captures (seconds)
   - `use_grayscale`: Convert to grayscale (bool)
   - `output_filename`: PDF output name
 
 ### Infrastructure Services
-- `OSWindowService` - Window detection and activation
-- `OSScreenService` - Screen capture, keyboard automation, image processing
+- `OSScreenService` - Window resolution, per-window capture (`screencapture -l`), key events to a PID (`CGEventPostToPid`), image processing
 
 ## Current Limitations
 

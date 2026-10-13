@@ -1,0 +1,18 @@
+[project]
+name = "kindle-to-pdf-api"
+version = "0.1.0"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "img2pdf",
+    "Pillow",
+    "pydantic",
+    "pyobjc-framework-Quartz",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.pyright]
+# VSCodeのエディタ（Pyright）に src をルートだと教える設定
+extraPaths = ["src"]
